@@ -1,0 +1,338 @@
+<div id="card-root"></div>
+<style>
+  #card-root {
+    --void: #07070f;
+    --void-2: #10102a;
+    --six-eyes: #4ce0ff;
+    --six-eyes-soft: #7fefff;
+    --violet: #8a6bff;
+    --paper: #f2f1f7;
+    --muted: #8d8ba8;
+    --gold: #ffd76b;
+
+    background: radial-gradient(ellipse at 50% 0%, var(--void-2), var(--void) 70%);
+    color: var(--paper);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    min-height: 100%;
+  }
+
+  #card-root * { box-sizing: border-box; }
+
+  .stagefx {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    padding: 56px 32px 40px;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .eyemark {
+    width: 128px;
+    height: 128px;
+    margin: 0 auto 18px;
+    position: relative;
+  }
+  .eyemark .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(76,224,255,0.55);
+    box-shadow: 0 0 30px rgba(76,224,255,0.35), inset 0 0 25px rgba(76,224,255,0.25);
+    animation: spin 14s linear infinite;
+  }
+  .eyemark .ring.r2 {
+    inset: 16px;
+    border-color: rgba(138,107,255,0.55);
+    box-shadow: 0 0 24px rgba(138,107,255,0.35), inset 0 0 18px rgba(138,107,255,0.25);
+    animation-duration: 10s;
+    animation-direction: reverse;
+  }
+  .eyemark .core {
+    position: absolute;
+    inset: 44px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #ffffff, var(--six-eyes-soft) 35%, var(--six-eyes) 60%, transparent 75%);
+    filter: blur(0.3px);
+    animation: pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+
+  .eyebrow {
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--six-eyes-soft);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  h1.headline {
+    font-size: clamp(34px, 7vw, 54px);
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+    background: linear-gradient(180deg, #ffffff 10%, var(--six-eyes-soft) 60%, var(--violet) 130%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.05;
+  }
+
+  .subline {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 34px;
+    letter-spacing: 0.02em;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 30px auto;
+    max-width: 340px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(140,140,180,0.5), transparent);
+  }
+
+  .message-card {
+    text-align: left;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid rgba(76,224,255,0.18);
+    border-radius: 16px;
+    padding: 28px 26px;
+    position: relative;
+  }
+  .message-card .tag {
+    position: absolute;
+    top: -12px;
+    left: 22px;
+    background: var(--six-eyes);
+    color: #06121a;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  .message-card p {
+    margin: 0 0 14px;
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: #ece9f7;
+  }
+  .message-card p:last-child { margin-bottom: 0; }
+  .signoff {
+    margin-top: 18px;
+    font-style: italic;
+    color: var(--six-eyes-soft);
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .voice-btn {
+    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--six-eyes), var(--violet));
+    color: #06121a;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(76,224,255,0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .voice-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(76,224,255,0.35); }
+  .voice-btn:active { transform: translateY(0); }
+  .voice-btn svg { width: 16px; height: 16px; }
+  .voice-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .note-section {
+    margin-top: 44px;
+    text-align: left;
+  }
+  .note-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .personal-note {
+    width: 100%;
+    min-height: 90px;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px dashed rgba(255,215,107,0.4);
+    border-radius: 14px;
+    padding: 18px 20px;
+    color: var(--paper);
+    font-size: 15.5px;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  .footer {
+    margin-top: 34px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eyemark .ring, .eyemark .core { animation: none; }
+  }
+</style>
+
+<script>
+(function() {
+  const root = document.getElementById('card-root');
+
+  root.innerHTML += `
+    <canvas class="stagefx" id="fx"></canvas>
+    <div class="content">
+      <div class="eyemark">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="core"></div>
+      </div>
+      <div class="eyebrow">Special Grade Transmission</div>
+      <h1 class="headline">Happy Birthday</h1>
+      <div class="subline">A message has manifested from the Infinite Void</div>
+
+      <div class="divider">Incoming Cursed Energy</div>
+
+      <div class="message-card">
+        <div class="tag">Gojo Satoru</div>
+        <p>Yo. So it's your birthday, huh? Figured someone had to show up and say it properly &mdash; and since I'm the strongest, obviously that someone is me.</p>
+        <p>Look, I don't do this "heartfelt speech" thing often, so listen close: you're one of the rare ones worth keeping around. Sharp, a little chaotic, and somehow still putting up with everyone's nonsense &mdash; mine included. That's not nothing.</p>
+        <p>So today, no monsters, no curses, no responsibilities. Just cake, chaos, and whatever ridiculous thing makes you laugh the hardest. You've earned an easy win.</p>
+        <p>And hey &mdash; if anything tries to ruin your day, you know who to call. I've got infinite time for you.</p>
+        <p>So from me to you &mdash; wishing you a really, <em>really</em> happy birthday. Go have the best one.</p>
+        <div class="signoff">&mdash; Gojo Satoru</div>
+      </div>
+
+      <button class="voice-btn" id="speakBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16.5 12a4.5 4.5 0 0 0-2.5-4.03v8.06A4.5 4.5 0 0 0 16.5 12z"/><path d="M14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+        Hear Gojo say it
+      </button>
+      <div class="voice-note">Uses your browser's built-in voice &mdash; no audio file needed.</div>
+
+      <div class="note-section">
+        <div class="note-label">Your own message</div>
+        <!--
+          EDIT YOUR PERSONAL MESSAGE BELOW.
+          Just replace the text inside the <p> tag with whatever you want to say.
+          It will stay here permanently since it's part of the card itself.
+        -->
+        <p class="personal-note">Hello akka hari ikada i know that i have made so many mistakes near you and hurt you so much and i know that i am not a really great frnd but i promis that i am a good one and i am really sorry about the this  u had to go through because of me i am really sorry for that so i have made this to see that if it brightens your facea little bit so its a message from ur favourite characater gojo as u can seee its ur b day right so i have though  to make something for you and make u feel good and i really wish that this will be your best birthday and i really 
+          
+Wish you many many happy returns of the day may you really enjoy your day </p>
+      </div>
+
+      <div class="footer">Domain: Unlimited Well-Wishes</div>
+    </div>
+  `;
+
+  // Particle field
+  const canvas = root.querySelector('#fx');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles;
+
+  function resize() {
+    const rect = root.getBoundingClientRect();
+    w = canvas.width = rect.width;
+    h = canvas.height = Math.max(rect.height, 600);
+    canvas.style.height = h + 'px';
+  }
+
+  function initParticles() {
+    particles = Array.from({ length: 60 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.6 + 0.4,
+      s: Math.random() * 0.4 + 0.1,
+      a: Math.random() * 0.6 + 0.2,
+      hue: Math.random() > 0.5 ? '76,224,255' : '138,107,255'
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.y -= p.s;
+      if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.hue},${p.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initParticles();
+  draw();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+
+  // Text-to-speech
+  const speakBtn = root.querySelector('#speakBtn');
+  const messageText = root.querySelectorAll('.message-card p');
+  const fullText = Array.from(messageText).map(p => p.textContent).join(' ');
+
+  speakBtn.addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) {
+      alert("This browser doesn't support built-in text-to-speech. Try Chrome or Edge.");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(fullText);
+    utter.rate = 0.98;
+    utter.pitch = 0.85;
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v => /male|david|daniel|google uk english male/i.test(v.name));
+    if (preferred) utter.voice = preferred;
+    speakBtn.disabled = true;
+    speakBtn.textContent = 'Speaking...';
+    utter.onend = () => {
+      speakBtn.disabled = false;
+      speakBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16.5 12a4.5 4.5 0 0 0-2.5-4.03v8.06A4.5 4.5 0 0 0 16.5 12z"/><path d="M14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg> Hear Gojo say it';
+    };
+    window.speechSynthesis.speak(utter);
+  });
+})();
+</script>
